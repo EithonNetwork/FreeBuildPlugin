@@ -1,0 +1,22 @@
+name: FreeBuildPlugin
+main: se.fredsfursten.freebuildplugin.FreeBuildPlugin
+version: 0.1
+author: vanbrayne
+description: A Minecraft plugin for turning "Free Build" on and off
+commands:
+  freebuild:
+    description: Control jump pads
+    usage: /freebuild on| off 
+    permission-message: You don't have <permission>
+permissions:
+  freebuild.*:
+    description: Gives access to all freebuild commands
+    default: op
+    freebuild.on: true
+    freebuild.off: true
+  freebuild.on:
+    description: Access to /freebuild on command
+    default: op
+  freebuild.off:
+    description: Access to /freebuild off command
+    default: op
