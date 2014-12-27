@@ -24,18 +24,20 @@ public final class FreeBuildPlugin extends JavaPlugin implements Listener {
 		getServer().getPluginManager().registerEvents(this, this);		
 		ProtectFreeBuilders.get().enable();
 		Commands.get().enable(this);
-		freeBuilders = FreeBuilders.get();
+		this.freeBuilders = FreeBuilders.get();
 	}
 
 	@Override
 	public void onDisable() {
 		ProtectFreeBuilders.get().disable();
 		Commands.get().disable();
-		freeBuilders = null;
+		this.freeBuilders = null;
 	}
 
 	@EventHandler
 	public void avoidBecomingATarget(EntityTargetLivingEntityEvent event) {
+		if (event.isCancelled()) return;
+
 		Entity target = event.getTarget();
 		if (!(target instanceof Player)) return;
 		Player player = (Player) target;
@@ -49,11 +51,12 @@ public final class FreeBuildPlugin extends JavaPlugin implements Listener {
 
 	@EventHandler
 	public void dontAttackMonsters(EntityDamageByEntityEvent event) {
+		if (event.isCancelled()) return;
+
 		Entity damager = event.getDamager();
 		if (!(damager instanceof Player)) return;
 		Player player = (Player) damager;
 		
-		//player.sendMessage("Event:" + event.toString());
 		if (!(event.getEntity() instanceof Monster)) return;
 		Monster monster = (Monster) event.getEntity();
 		
@@ -63,7 +66,20 @@ public final class FreeBuildPlugin extends JavaPlugin implements Listener {
 		if (monster.getTarget() == player) return;
 
 		event.setCancelled(true);
-		//player.sendMessage("Cancelled");
+	}
+
+
+	@EventHandler
+	public void noDamage(EntityDamageEvent event) {
+		if (event.isCancelled()) return;
+		
+		Entity entity = event.getEntity();
+		if (!(entity instanceof Player)) return;
+		Player player = (Player) entity;
+		
+		if (!this.freeBuilders.isFreeBuilder(player)) return;
+		
+		event.setCancelled(true);
 	}
 
 	@Override
