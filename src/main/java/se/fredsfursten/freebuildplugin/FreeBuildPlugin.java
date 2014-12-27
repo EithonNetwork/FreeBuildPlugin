@@ -16,36 +16,54 @@ import org.bukkit.plugin.java.JavaPlugin;
 import se.fredsfursten.freebuildplugin.ProtectFreeBuilders;
 
 public final class FreeBuildPlugin extends JavaPlugin implements Listener {
+	
+	private FreeBuilders freeBuilders;
 
 	@Override
 	public void onEnable() {
 		getServer().getPluginManager().registerEvents(this, this);		
 		ProtectFreeBuilders.get().enable();
 		Commands.get().enable(this);
+		freeBuilders = FreeBuilders.get();
 	}
 
 	@Override
 	public void onDisable() {
 		ProtectFreeBuilders.get().disable();
 		Commands.get().disable();
+		freeBuilders = null;
 	}
 
 	@EventHandler
-	public void protectTarget(EntityTargetLivingEntityEvent event) {
+	public void avoidBecomingATarget(EntityTargetLivingEntityEvent event) {
 		Entity target = event.getTarget();
 		if (!(target instanceof Player)) return;
 		Player player = (Player) target;
 		
-		player.sendMessage("Event:" + event.toString());
 		if (!(event.getEntity() instanceof Monster)) return;
-
-		TargetReason targetReason = event.getReason();
-		player.sendMessage("Reason:" + targetReason.toString());
 		
-		if (!FreeBuilders.get().isFreeBuilder(player)) return;
+		if (!this.freeBuilders.isFreeBuilder(player)) return;
 
 		event.setCancelled(true);
-		player.sendMessage("Cancelled");
+	}
+
+	@EventHandler
+	public void dontAttackMonsters(EntityDamageByEntityEvent event) {
+		Entity damager = event.getDamager();
+		if (!(damager instanceof Player)) return;
+		Player player = (Player) damager;
+		
+		//player.sendMessage("Event:" + event.toString());
+		if (!(event.getEntity() instanceof Monster)) return;
+		Monster monster = (Monster) event.getEntity();
+		
+		if (!this.freeBuilders.isFreeBuilder(player)) return;
+		
+		// You can attack monsters that targets you
+		if (monster.getTarget() == player) return;
+
+		event.setCancelled(true);
+		//player.sendMessage("Cancelled");
 	}
 
 	@Override

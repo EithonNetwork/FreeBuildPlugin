@@ -19,10 +19,11 @@ The plugin provides administrative commands for going in and out of FreeBuild mo
 
 When the user changes to FreeBuild mode, the following applies:
 
-* The user can't be attacked by mobs.
+* The user can't be attacked by monsters
+* The user can't attack monsters
 
 ## Release history
 
-### 0.1 (2014-12-27)
+### 1.0 (2014-12-27)
 
-* NEW: First working version
+* NEW: First working version.

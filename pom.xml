@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>se.fredsfursten</groupId>
   <artifactId>FreeBuildPlugin</artifactId>
-  <version>0.1</version>
+  <version>1.0</version>
   <name>FreeBuildPlugin</name>
   <build>
       <plugins>

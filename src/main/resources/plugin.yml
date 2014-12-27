@@ -1,6 +1,6 @@
 name: FreeBuildPlugin
 main: se.fredsfursten.freebuildplugin.FreeBuildPlugin
-version: 0.1
+version: 1.0
 author: vanbrayne
 description: A Minecraft plugin for turning "Free Build" on and off
 commands:
