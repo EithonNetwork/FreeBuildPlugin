@@ -7,7 +7,6 @@ import java.util.UUID;
 import org.bukkit.entity.Player;
 
 public class FreeBuilders {
-	private static final String FILE_PATH = "plugins/JumpPad/jumppad_locations.bin";
 	private static FreeBuilders singleton = null;
 
 	private HashMap<UUID, FreeBuilderInfo> freeBuilders = null;

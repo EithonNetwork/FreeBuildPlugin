@@ -6,7 +6,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.Vector;
 
-public class Commands implements Listener {
+public class Commands {
 	private static Commands singleton = null;
 	private static final String ON_COMMAND = "/freebuild on";
 	private static final String OFF_COMMAND = "/freebuild off";

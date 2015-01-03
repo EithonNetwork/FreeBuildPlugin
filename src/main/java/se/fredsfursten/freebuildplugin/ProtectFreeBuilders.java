@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.util.Vector;
 
-public class ProtectFreeBuilders implements Listener {
+public class ProtectFreeBuilders {
 	private static ProtectFreeBuilders singleton = null;
 
 	private FreeBuilders freeBuilders = null;

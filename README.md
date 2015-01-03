@@ -25,6 +25,10 @@ When the user changes to FreeBuild mode, the following applies:
 
 ## Release history
 
+### 1.1.1 (2015-01-03)
+
+* BUG: Conflicted with the JumpPadPlugin, so loading plugin failed
+
 ### 1.1 (2014-12-27)
 
 * NEW: FreeBuild player can't be damaged
