@@ -16,21 +16,16 @@ import se.fredsfursten.plugintools.PlayerInfo;
 
 public final class FreeBuildPlugin extends JavaPlugin implements Listener {
 	
-	private PlayerInfo<FreeBuilderInfo> freeBuilders;
 
 	@Override
 	public void onEnable() {
 		getServer().getPluginManager().registerEvents(this, this);		
-		ProtectFreeBuilders.get().enable();
 		Commands.get().enable(this);
-		this.freeBuilders = new PlayerInfo<FreeBuilderInfo>();
 	}
 
 	@Override
 	public void onDisable() {
-		ProtectFreeBuilders.get().disable();
 		Commands.get().disable();
-		this.freeBuilders = null;
 	}
 
 	@EventHandler
@@ -43,7 +38,7 @@ public final class FreeBuildPlugin extends JavaPlugin implements Listener {
 		
 		if (!(event.getEntity() instanceof Monster)) return;
 		
-		if (!this.freeBuilders.hasInformation(player)) return;
+		if (!Commands.get().hasInformation(player)) return;
 
 		event.setCancelled(true);
 	}
@@ -59,7 +54,7 @@ public final class FreeBuildPlugin extends JavaPlugin implements Listener {
 		if (!(event.getEntity() instanceof Monster)) return;
 		Monster monster = (Monster) event.getEntity();
 		
-		if (!this.freeBuilders.hasInformation(player)) return;
+		if (!Commands.get().hasInformation(player)) return;
 		
 		// You can attack monsters that targets you
 		if (monster.getTarget() == player) return;
@@ -76,7 +71,7 @@ public final class FreeBuildPlugin extends JavaPlugin implements Listener {
 		if (!(entity instanceof Player)) return;
 		Player player = (Player) entity;
 		
-		if (!this.freeBuilders.hasInformation(player)) return;
+		if (!Commands.get().hasInformation(player)) return;
 		
 		event.setCancelled(true);
 	}

@@ -25,6 +25,10 @@ When the user changes to FreeBuild mode, the following applies:
 
 ## Release history
 
+### 1.2 (2015-01-06)
+
+* CHANGE: Now uses PluginTools.
+
 ### 1.1.1 (2015-01-03)
 
 * BUG: Conflicted with the JumpPadPlugin, so loading plugin failed

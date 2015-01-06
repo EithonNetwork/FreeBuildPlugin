@@ -6,16 +6,17 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.Vector;
 
+import se.fredsfursten.plugintools.PlayerInfo;
+
 public class Commands {
 	private static Commands singleton = null;
 	private static final String ON_COMMAND = "/freebuild on";
 	private static final String OFF_COMMAND = "/freebuild off";
 
 	private JavaPlugin plugin = null;
-	private FreeBuilders allJumpPads = null;
+	private PlayerInfo<FreeBuilderInfo> freeBuilders;
 
 	private Commands() {
-		this.allJumpPads = FreeBuilders.get();
 	}
 
 	static Commands get()
@@ -28,9 +29,15 @@ public class Commands {
 
 	void enable(JavaPlugin plugin){
 		this.plugin = plugin;
+		this.freeBuilders = new PlayerInfo<FreeBuilderInfo>();
 	}
 
 	void disable() {
+		this.freeBuilders = null;
+	}
+	
+	boolean hasInformation(Player player) {
+		return this.freeBuilders.hasInformation(player);
 	}
 
 	void onCommand(Player player, String[] args)
@@ -41,14 +48,13 @@ public class Commands {
 			return;
 		}
 		
-		FreeBuilders freeBuilders = FreeBuilders.get();
-		if (freeBuilders.isFreeBuilder(player))
+		if (this.freeBuilders.hasInformation(player))
 		{
 			player.sendMessage("You already have FreeBuilder ON.");
 			return;
 		}
 		
-		freeBuilders.add(player);
+		this.freeBuilders.put(player, new FreeBuilderInfo(player));
 	}
 	
 	void offCommand(Player player, String[] args)
@@ -59,18 +65,17 @@ public class Commands {
 			return;
 		}
 		
-		FreeBuilders freeBuilders = FreeBuilders.get();
-		if (!freeBuilders.isFreeBuilder(player))
+		if (!this.freeBuilders.hasInformation(player))
 		{
 			player.sendMessage("You already have FreeBuilder OFF.");
 			return;
 		}
 		
-		FreeBuilderInfo info = freeBuilders.get(player);
+		FreeBuilderInfo info = this.freeBuilders.get(player);
 		
 		// TODO: Add cold down period
 		
-		freeBuilders.remove(player);
+		this.freeBuilders.remove(player);
 	}
 
 	private boolean verifyPermission(Player player, String permission)
