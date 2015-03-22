@@ -1,12 +1,9 @@
 package se.fredsfursten.freebuildplugin;
 
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.util.Vector;
 
-import se.fredsfursten.plugintools.PlayerInfo;
+import se.fredsfursten.plugintools.PlayerCollection;
 
 public class Commands {
 	private static Commands singleton = null;
@@ -14,7 +11,7 @@ public class Commands {
 	private static final String OFF_COMMAND = "/freebuild off";
 
 	private JavaPlugin plugin = null;
-	private PlayerInfo<FreeBuilderInfo> freeBuilders;
+	private PlayerCollection<FreeBuilderInfo> freeBuilders;
 
 	private Commands() {
 	}
@@ -29,7 +26,7 @@ public class Commands {
 
 	void enable(JavaPlugin plugin){
 		this.plugin = plugin;
-		this.freeBuilders = new PlayerInfo<FreeBuilderInfo>();
+		this.freeBuilders = new PlayerCollection<FreeBuilderInfo>();
 	}
 
 	void disable() {
