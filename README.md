@@ -25,6 +25,10 @@ When the user changes to FreeBuild mode, the following applies:
 
 ## Release history
 
+### 1.3.1 (2015-04-03)
+
+* CHANGE: New plugin tools
+
 ### 1.2 (2015-01-06)
 
 * CHANGE: Now uses PluginTools.
