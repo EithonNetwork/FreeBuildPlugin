@@ -25,6 +25,10 @@ When the user changes to FreeBuild mode, the following applies:
 
 ## Release history
 
+### 1.4 (2015-04-04)
+
+* NEW: Now uses EithonLibraryPlugin.
+
 ### 1.3.1 (2015-04-03)
 
 * CHANGE: New plugin tools
