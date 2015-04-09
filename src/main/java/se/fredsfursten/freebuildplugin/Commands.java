@@ -36,6 +36,11 @@ public class Commands {
 	boolean hasInformation(Player player) {
 		return this.freeBuilders.hasInformation(player);
 	}
+	
+	public FreeBuilderInfo getInfo(Player player)
+	{
+		return this.freeBuilders.get(player);
+	}
 
 	void onCommand(Player player, String[] args)
 	{

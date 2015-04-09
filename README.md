@@ -25,6 +25,10 @@ When the user changes to FreeBuild mode, the following applies:
 
 ## Release history
 
+### 1.5 (2015-04-09)
+
+* NEW: Freebuilders can't splash other persons and other persons can't splash Freebuilders.
+
 ### 1.4 (2015-04-04)
 
 * NEW: Now uses EithonLibraryPlugin.
