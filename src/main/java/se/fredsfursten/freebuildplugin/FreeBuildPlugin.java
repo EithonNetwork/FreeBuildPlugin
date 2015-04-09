@@ -12,6 +12,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
 import org.bukkit.event.entity.PotionSplashEvent;
+import org.bukkit.event.player.PlayerToggleFlightEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class FreeBuildPlugin extends JavaPlugin implements Listener {
@@ -80,14 +81,13 @@ public final class FreeBuildPlugin extends JavaPlugin implements Listener {
 
 	// No potion effects on free build players
 	@EventHandler
-	public void on(PotionSplashEvent event) {
+	public void onPotionSplashEvent(PotionSplashEvent event) {
 		if (event.isCancelled()) return;
 		Player shooter = null;
 		boolean shooterIsFreeBuilder = false;
 		if(event.getPotion().getShooter() instanceof Player) {
 			shooter = (Player) event.getPotion().getShooter();
-			FreeBuilderInfo info = Commands.get().getInfo(shooter);
-			if (info != null) shooterIsFreeBuilder = true;
+			shooterIsFreeBuilder = Commands.get().isFreeBuilder(shooter);
 		}
 		for (LivingEntity livingEntity : event.getAffectedEntities()) {
 			if (!(livingEntity instanceof Player)) {
@@ -96,15 +96,24 @@ public final class FreeBuildPlugin extends JavaPlugin implements Listener {
 				continue;
 			}
 			Player affectedPlayer = (Player) livingEntity;
-			FreeBuilderInfo info = Commands.get().getInfo(affectedPlayer);
 			boolean shooterAndAffectedAreTheSamePlayer = affectedPlayer.getUniqueId() == shooter.getUniqueId();
-			boolean affectedIsFreebuilder = info == null;
+			boolean affectedIsFreebuilder = Commands.get().isFreeBuilder(affectedPlayer);
 			// Freebuilders can affect themselves
 			if (shooterIsFreeBuilder && shooterAndAffectedAreTheSamePlayer) continue;
 			// Non freebuilders can affect each other
 			if (!shooterIsFreeBuilder && !affectedIsFreebuilder) continue;
 			event.setIntensity(livingEntity, 0.0);
 		}
+	}
+	
+	// Survival players can't fly
+	@EventHandler
+	public void onPlayerToggleFlightEvent(PlayerToggleFlightEvent event) {
+		if (event.isCancelled()) return;
+		if (event.isFlying()) return;
+		if (Commands.get().isFreeBuilder(event.getPlayer())) return;
+		event.getPlayer().sendMessage("You can't fly in survival mode.");
+		event.setCancelled(true);
 	}
 
 	@Override

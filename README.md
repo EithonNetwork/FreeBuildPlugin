@@ -25,6 +25,10 @@ When the user changes to FreeBuild mode, the following applies:
 
 ## Release history
 
+### 1.6 (2015-04-09)
+
+* NEW: Survival mode players can't fly
+
 ### 1.5 (2015-04-09)
 
 * NEW: Freebuilders can't splash other persons and other persons can't splash Freebuilders.

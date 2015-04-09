@@ -37,9 +37,14 @@ public class Commands {
 		return this.freeBuilders.hasInformation(player);
 	}
 	
-	public FreeBuilderInfo getInfo(Player player)
+	private FreeBuilderInfo getInfo(Player player)
 	{
 		return this.freeBuilders.get(player);
+	}
+	
+	public boolean isFreeBuilder(Player player)
+	{
+		return this.freeBuilders.get(player) != null;
 	}
 
 	void onCommand(Player player, String[] args)
