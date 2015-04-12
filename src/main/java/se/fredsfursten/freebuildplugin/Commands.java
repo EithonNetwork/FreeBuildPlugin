@@ -1,20 +1,16 @@
 package se.fredsfursten.freebuildplugin;
 
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.util.Vector;
 
-import se.fredsfursten.plugintools.PlayerInfo;
+import se.fredsfursten.plugintools.PlayerCollection;
 
 public class Commands {
 	private static Commands singleton = null;
 	private static final String ON_COMMAND = "/freebuild on";
 	private static final String OFF_COMMAND = "/freebuild off";
 
-	private JavaPlugin plugin = null;
-	private PlayerInfo<FreeBuilderInfo> freeBuilders;
+	private PlayerCollection<FreeBuilderInfo> freeBuilders = new PlayerCollection<FreeBuilderInfo>(new FreeBuilderInfo());
 
 	private Commands() {
 	}
@@ -28,8 +24,7 @@ public class Commands {
 	}
 
 	void enable(JavaPlugin plugin){
-		this.plugin = plugin;
-		this.freeBuilders = new PlayerInfo<FreeBuilderInfo>();
+		this.freeBuilders = new PlayerCollection<FreeBuilderInfo>(new FreeBuilderInfo());
 	}
 
 	void disable() {
@@ -38,6 +33,11 @@ public class Commands {
 	
 	boolean hasInformation(Player player) {
 		return this.freeBuilders.hasInformation(player);
+	}
+	
+	public boolean isFreeBuilder(Player player)
+	{
+		return this.freeBuilders.get(player) != null;
 	}
 
 	void onCommand(Player player, String[] args)
@@ -71,9 +71,9 @@ public class Commands {
 			return;
 		}
 		
-		FreeBuilderInfo info = this.freeBuilders.get(player);
+		this.freeBuilders.get(player);
 		
-		// TODO: Add cold down period
+		// TODO: Add cool down period
 		
 		this.freeBuilders.remove(player);
 	}

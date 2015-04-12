@@ -25,6 +25,22 @@ When the user changes to FreeBuild mode, the following applies:
 
 ## Release history
 
+### 1.6 (2015-04-09)
+
+* NEW: Survival mode players can't fly
+
+### 1.5 (2015-04-09)
+
+* NEW: Freebuilders can't splash other persons and other persons can't splash Freebuilders.
+
+### 1.4 (2015-04-04)
+
+* NEW: Now uses EithonLibraryPlugin.
+
+### 1.3.1 (2015-04-03)
+
+* CHANGE: New plugin tools
+
 ### 1.2 (2015-01-06)
 
 * CHANGE: Now uses PluginTools.
