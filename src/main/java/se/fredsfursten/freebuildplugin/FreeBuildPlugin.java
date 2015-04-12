@@ -15,13 +15,16 @@ import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.event.player.PlayerToggleFlightEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import se.fredsfursten.plugintools.Misc;
+
 public final class FreeBuildPlugin extends JavaPlugin implements Listener {
 
 
 	@Override
 	public void onEnable() {
-		getServer().getPluginManager().registerEvents(this, this);		
+		Misc.enable(this);	
 		Commands.get().enable(this);
+		getServer().getPluginManager().registerEvents(this, this);	
 	}
 
 	@Override
@@ -110,7 +113,7 @@ public final class FreeBuildPlugin extends JavaPlugin implements Listener {
 	@EventHandler
 	public void onPlayerToggleFlightEvent(PlayerToggleFlightEvent event) {
 		if (event.isCancelled()) return;
-		if (event.isFlying()) return;
+		if (!event.isFlying()) return;
 		if (Commands.get().isFreeBuilder(event.getPlayer())) return;
 		event.getPlayer().sendMessage("You can't fly in survival mode.");
 		event.setCancelled(true);

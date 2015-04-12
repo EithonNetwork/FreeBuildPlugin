@@ -10,8 +10,7 @@ public class Commands {
 	private static final String ON_COMMAND = "/freebuild on";
 	private static final String OFF_COMMAND = "/freebuild off";
 
-	private JavaPlugin plugin = null;
-	private PlayerCollection<FreeBuilderInfo> freeBuilders;
+	private PlayerCollection<FreeBuilderInfo> freeBuilders = new PlayerCollection<FreeBuilderInfo>(new FreeBuilderInfo());
 
 	private Commands() {
 	}
@@ -25,8 +24,7 @@ public class Commands {
 	}
 
 	void enable(JavaPlugin plugin){
-		this.plugin = plugin;
-		this.freeBuilders = new PlayerCollection<FreeBuilderInfo>();
+		this.freeBuilders = new PlayerCollection<FreeBuilderInfo>(new FreeBuilderInfo());
 	}
 
 	void disable() {
@@ -35,11 +33,6 @@ public class Commands {
 	
 	boolean hasInformation(Player player) {
 		return this.freeBuilders.hasInformation(player);
-	}
-	
-	private FreeBuilderInfo getInfo(Player player)
-	{
-		return this.freeBuilders.get(player);
 	}
 	
 	public boolean isFreeBuilder(Player player)
@@ -78,9 +71,9 @@ public class Commands {
 			return;
 		}
 		
-		FreeBuilderInfo info = this.freeBuilders.get(player);
+		this.freeBuilders.get(player);
 		
-		// TODO: Add cold down period
+		// TODO: Add cool down period
 		
 		this.freeBuilders.remove(player);
 	}

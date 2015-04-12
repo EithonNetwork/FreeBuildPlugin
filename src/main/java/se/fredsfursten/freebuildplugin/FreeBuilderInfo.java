@@ -1,16 +1,16 @@
 package se.fredsfursten.freebuildplugin;
 
-import java.util.Date;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
-import org.bukkit.util.Vector;
+import org.json.simple.JSONObject;
 
-class FreeBuilderInfo {
-	private Date date;
+import se.fredsfursten.plugintools.IJson;
+import se.fredsfursten.plugintools.IUuidAndName;
+import se.fredsfursten.plugintools.Json;
+
+class FreeBuilderInfo implements IJson<FreeBuilderInfo>, IUuidAndName {
 	private UUID playerId;
 	private String playerName;
 	
@@ -18,11 +18,9 @@ class FreeBuilderInfo {
 	{
 		this.playerId = player.getUniqueId();
 		this.playerName = player.getName();
-		this.date = new Date();
 	}
 	
-	Date getDate() {
-		return this.date;
+	FreeBuilderInfo() {
 	}
 	
 	Player getPlayer()
@@ -30,12 +28,34 @@ class FreeBuilderInfo {
 		return Bukkit.getServer().getPlayer(this.playerId);
 	}
 	
-	String getName()
+	public String getName()
 	{
 		return this.playerName;
 	}
 
 	public String toString() {
-		return String.format("%s: %s", this.getName(), this.date.toString());
+		return String.format("%s", this.getName());
+	}
+
+	@Override
+	public FreeBuilderInfo factory() {
+		return new FreeBuilderInfo();
+	}
+
+	@Override
+	public UUID getUniqueId() {
+		return this.playerId;
+	}
+
+	@Override
+	public Object toJson() {
+		return Json.fromPlayer(this.playerId, this.playerName);
+	}
+
+	@Override
+	public void fromJson(Object json) {
+		this.playerId = Json.toPlayerId((JSONObject) json);
+		this.playerName = Json.toPlayerName((JSONObject) json);
+		
 	}
 }
