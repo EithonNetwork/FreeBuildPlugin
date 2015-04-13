@@ -1,0 +1,21 @@
+#
+# The worlds that we want to have access to freebuild functionality
+#
+FreebuildWorldNames: [W_SurvivalFreebuild]
+
+#
+# StillBannedMinutesMessage has 1 parameters: <minutes left> (%d)
+#
+StillBannedMinutesMessage: Due to your earlier death in the hardcore world, you are banned for another %d minutes more.
+
+# DoDebugPrint
+DoDebugPrint: 0
+
+messages:
+
+  #
+  # This message is displayed when someone tries to use freebuild outside the allowed worlds (see FreebuildWorldNames)
+  # It has no parameters.
+  #
+  MustBeInFreebuildWordMessage: You can only switch between survival and freebuild in the SurvivalFreebuild world.
+

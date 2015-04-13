@@ -1,12 +1,12 @@
 name: FreeBuildPlugin
 main: se.fredsfursten.freebuildplugin.FreeBuildPlugin
-version: 2.0
+version: 2.2
 author: vanbrayne
 description: A Minecraft plugin for turning "Free Build" on and off
 commands:
   freebuild:
     description: Variations of survival/creative modes
-    usage: /freebuild on| off 
+    usage: /freebuild on | off 
     permission-message: You don't have <permission>
 permissions:
   freebuild.*:
@@ -14,9 +14,17 @@ permissions:
     default: op
     freebuild.on: true
     freebuild.off: true
+    freebuild.canfly: true
+    freebuild.inallworlds: true
   freebuild.on:
     description: Access to /freebuild on command
     default: op
   freebuild.off:
     description: Access to /freebuild off command
+    default: op
+  freebuild.canfly:
+    description: Can fly even in freebuild mode
+    default: op
+  freebuild.inallworlds:
+    description: Can use the freebuild command in all worlds
     default: op
