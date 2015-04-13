@@ -25,6 +25,20 @@ When the user changes to FreeBuild mode, the following applies:
 
 ## Release history
 
+### 2.2 (2015-04-13)
+
+* NEW: Limit freebuild to configured worlds.
+* NEW: Permission freebuild.inallworlds means the player can use the freebuild command in all worlds
+* BUG: Syntax error in config.yml
+
+### 2.1 (2015-04-13)
+
+* NEW: Permission freebuild.canfly means the player can fly in survival mode
+
+### 2.0 (2015-04-12)
+
+* NEW: Release
+
 ### 1.6 (2015-04-09)
 
 * NEW: Survival mode players can't fly
