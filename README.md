@@ -25,6 +25,10 @@ When the user changes to FreeBuild mode, the following applies:
 
 ## Release history
 
+### 2.2.1 (2015-04-14)
+
+* BUG: Should not prohibits fly in the non-free builder worlds. 
+
 ### 2.2 (2015-04-13)
 
 * NEW: Limit freebuild to configured worlds.
