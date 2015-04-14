@@ -13,6 +13,8 @@ import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.event.player.PlayerToggleFlightEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import se.fredsfursten.plugintools.Misc;
+
 public class Events implements Listener {
 	private static Events singleton = null;
 
@@ -113,15 +115,23 @@ public class Events implements Listener {
 	// Survival players can't fly
 	@EventHandler
 	public void onPlayerToggleFlightEvent(PlayerToggleFlightEvent event) {
+		Misc.debugInfo("1. Entered onPlayerToggleFlightEvent");
+		Misc.debugInfo("2. Cancel if event already has been cancelled.");
 		if (event.isCancelled()) return;
+		Misc.debugInfo("3. Give OK if the player doesn't try to fly, i.e. is landing.");
 		if (!event.isFlying()) return;
 		
+		Misc.debugInfo("4. Give OK if the player is not in any of the free builder worlds.");
+		if (!Commands.get().inFreebuildWorld(event.getPlayer(), false)) return;
+		
 		// Allow players with permission freebuild.canfly to fly
+		Misc.debugInfo("5. Give OK if user has freebuild.canfly permission.");
 		if (event.getPlayer().hasPermission("freebuild.canfly")) return;
 		
-		if (Commands.get().canUseFreebuilderProtection(event.getPlayer())) return;
-		if (!Commands.get().inFreebuildWorld(event.getPlayer(), false)) return;
-		event.getPlayer().sendMessage("You are not allowed to fly.");
+		Misc.debugInfo("5. Give OK if the player is a freebuilder.");
+		if (Commands.get().isFreeBuilder(event.getPlayer())) return;
+		Misc.debugInfo("6. Final decision: The player is not allowed to fly.");
+		event.getPlayer().sendMessage("You are currently not allowed to fly.");
 		event.setCancelled(true);
 	}
 }

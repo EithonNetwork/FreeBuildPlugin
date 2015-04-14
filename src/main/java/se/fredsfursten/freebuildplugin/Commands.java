@@ -8,6 +8,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.sun.org.apache.xpath.internal.axes.HasPositionalPredChecker;
 
 import se.fredsfursten.plugintools.ConfigurableFormat;
+import se.fredsfursten.plugintools.CoolDown;
 import se.fredsfursten.plugintools.Misc;
 import se.fredsfursten.plugintools.PlayerCollection;
 import se.fredsfursten.plugintools.PluginConfig;
@@ -17,7 +18,10 @@ public class Commands {
 	private static final String ON_COMMAND = "/freebuild on";
 	private static final String OFF_COMMAND = "/freebuild off";
 	private ConfigurableFormat mustBeInFreebuildWordMessage;
+	private ConfigurableFormat waitForCoolDownMessage;
 	private List<String> applicableWorlds;
+	private int _coolDownTimeInMinutes;
+	private CoolDown _coolDown;
 
 	private PlayerCollection<FreeBuilderInfo> freeBuilders = new PlayerCollection<FreeBuilderInfo>(new FreeBuilderInfo());
 
@@ -36,9 +40,14 @@ public class Commands {
 		this.freeBuilders = new PlayerCollection<FreeBuilderInfo>(new FreeBuilderInfo());
 		PluginConfig config = PluginConfig.get(plugin);
 		this.applicableWorlds = config.getStringList("FreebuildWorldNames");
+		this._coolDownTimeInMinutes = config.getInt("CoolDownTimeInMinutes", 30);
 		this.mustBeInFreebuildWordMessage = config.getConfigurableFormat(
 				"messages.MustBeInFreebuildWordMessage", 0, 
 				"You can only switch between survival and freebuild in the SurvivalFreebuild world.");
+		this.waitForCoolDownMessage = config.getConfigurableFormat(
+				"messages.WaitForCoolDownMessage", 2, 
+				"The remaining cool down period for switching Freebuild mode is %d minutes and %d seconds.");
+		this._coolDown = new CoolDown("freebuild", this._coolDownTimeInMinutes*60);
 	}
 
 	void disable() {
@@ -52,12 +61,26 @@ public class Commands {
 	
 	public boolean canUseFreebuilderProtection(Player player, boolean warnIfNotInFreebuildWorld)
 	{
-		return this.freeBuilders.hasInformation(player) && inFreebuildWorld(player, warnIfNotInFreebuildWorld);
+		Misc.debugInfo("  canUseFreebuilderProtection: Return false if the current player is not a freebuilder.");
+		if (!isFreeBuilder(player)) return false;
+		Misc.debugInfo("  canUseFreebuilderProtection: Return false if the player's current world is not a freebuilder world.");
+		if (!inFreebuildWorld(player, warnIfNotInFreebuildWorld)) return false;
+		Misc.debugInfo("  canUseFreebuilderProtection: Returns true.");
+		return true;
 	}
 	
-	private boolean isFreeBuilder(Player player)
+	boolean isFreeBuilder(Player player)
 	{
 		return this.freeBuilders.get(player) != null;
+	}
+	
+	boolean inFreebuildWorld(Player player, boolean mustBeInFreeBuildWord) {
+		String currentWorldName = player.getWorld().getName();
+		for (String worldName : this.applicableWorlds) {
+			if (currentWorldName.equalsIgnoreCase(worldName)) return true;
+		}
+		if (mustBeInFreeBuildWord) this.mustBeInFreebuildWordMessage.sendMessage(player);
+		return false;
 	}
 
 	void onCommand(Player player, String[] args)
@@ -79,17 +102,15 @@ public class Commands {
 			return;
 		}
 		
-		this.freeBuilders.put(player, new FreeBuilderInfo(player));
-	}
-	
-	boolean inFreebuildWorld(Player player, boolean mustBeInFreeBuildWord) {
-		if (player.hasPermission("freebuild.inallworlds")) return true;
-		String currentWorldName = player.getWorld().getName();
-		for (String worldName : this.applicableWorlds) {
-			if (currentWorldName.equalsIgnoreCase(worldName)) return true;
+		int secondsLeft = this._coolDown.secondsLeft(player);
+		if (secondsLeft > 0) {
+			int minutes = secondsLeft/60;
+			int seconds = secondsLeft - 60 * minutes;
+			this.waitForCoolDownMessage.sendMessage(player, minutes, seconds);
+			return;
 		}
-		if (mustBeInFreeBuildWord) this.mustBeInFreebuildWordMessage.sendMessage(player);
-		return false;
+		
+		this.freeBuilders.put(player, new FreeBuilderInfo(player));
 	}
 
 	void offCommand(Player player, String[] args)

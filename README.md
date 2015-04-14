@@ -20,10 +20,14 @@ The plugin provides administrative commands for going in and out of FreeBuild mo
 When the user changes to FreeBuild mode, the following applies:
 
 * The user can't be attacked by monsters
-* The user can't attack monstersf
+* The user can't attack monsters
 * The user can't be damaged
 
 ## Release history
+
+### 2.3 (2015-04-14)
+
+* NEW: Added a configurable cooldown period. 
 
 ### 2.2.1 (2015-04-14)
 
