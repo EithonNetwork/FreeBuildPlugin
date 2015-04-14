@@ -105,7 +105,8 @@ public class Commands {
 		if (!verifyCoolDown(player)) return;
 
 		this.freeBuilders.put(player, new FreeBuilderInfo(player));
-		player.sendMessage("Freebuild mode is now active.");	
+		player.sendMessage("Freebuild mode is now active.");
+		this._coolDown.addPlayer(player);
 	}
 
 	private boolean verifyCoolDown(Player player) {
@@ -139,7 +140,8 @@ public class Commands {
 		// TODO: Add cool down period
 
 		this.freeBuilders.remove(player);
-		player.sendMessage("Survival mode is now active (freebuild is OFF).");		
+		player.sendMessage("Survival mode is now active (freebuild is OFF).");	
+		this._coolDown.addPlayer(player);	
 	}
 
 
