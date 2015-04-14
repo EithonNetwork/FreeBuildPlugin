@@ -82,7 +82,7 @@ public class Commands {
 		this.freeBuilders.put(player, new FreeBuilderInfo(player));
 	}
 	
-	private boolean inFreebuildWorld(Player player, boolean mustBeInFreeBuildWord) {
+	boolean inFreebuildWorld(Player player, boolean mustBeInFreeBuildWord) {
 		if (player.hasPermission("freebuild.inallworlds")) return true;
 		String currentWorldName = player.getWorld().getName();
 		for (String worldName : this.applicableWorlds) {

@@ -120,6 +120,7 @@ public class Events implements Listener {
 		if (event.getPlayer().hasPermission("freebuild.canfly")) return;
 		
 		if (Commands.get().canUseFreebuilderProtection(event.getPlayer())) return;
+		if (!Commands.get().inFreebuildWorld(event.getPlayer(), false)) return;
 		event.getPlayer().sendMessage("You are not allowed to fly.");
 		event.setCancelled(true);
 	}
