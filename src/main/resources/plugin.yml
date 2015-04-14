@@ -1,6 +1,6 @@
 name: FreeBuildPlugin
 main: se.fredsfursten.freebuildplugin.FreeBuildPlugin
-version: 2.3
+version: 2.3.1
 author: vanbrayne
 description: A Minecraft plugin for turning "Free Build" on and off
 commands:
@@ -15,6 +15,7 @@ permissions:
     freebuild.on: true
     freebuild.off: true
     freebuild.canfly: true
+    freebuild.nocooldown: true
   freebuild.on:
     description: Access to /freebuild on command
     default: op
@@ -23,4 +24,7 @@ permissions:
     default: op
   freebuild.canfly:
     description: Can fly even in freebuild mode
+    default: op
+  freebuild.nocooldown:
+    description: Can toogle between on and off without cooldown time
     default: op

@@ -53,12 +53,12 @@ public class Commands {
 	void disable() {
 		this.freeBuilders = null;
 	}
-	
+
 	public boolean canUseFreebuilderProtection(Player player)
 	{
 		return canUseFreebuilderProtection(player, false);
 	}
-	
+
 	public boolean canUseFreebuilderProtection(Player player, boolean warnIfNotInFreebuildWorld)
 	{
 		Misc.debugInfo("  canUseFreebuilderProtection: Return false if the current player is not a freebuilder.");
@@ -68,12 +68,12 @@ public class Commands {
 		Misc.debugInfo("  canUseFreebuilderProtection: Returns true.");
 		return true;
 	}
-	
+
 	boolean isFreeBuilder(Player player)
 	{
 		return this.freeBuilders.get(player) != null;
 	}
-	
+
 	boolean inFreebuildWorld(Player player, boolean mustBeInFreeBuildWord) {
 		String currentWorldName = player.getWorld().getName();
 		for (String worldName : this.applicableWorlds) {
@@ -90,27 +90,34 @@ public class Commands {
 			player.sendMessage(ON_COMMAND);
 			return;
 		}
-		
-		if (this.freeBuilders.hasInformation(player))
+
+		if (isFreeBuilder(player))
 		{
-			player.sendMessage("You already have FreeBuilder ON.");
+			player.sendMessage("Freebuild mode is already active.");
 			return;
 		}
-		
+
 		if (!inFreebuildWorld(player, true)) {
 			this.mustBeInFreebuildWordMessage.sendMessage(player);
 			return;
 		}
-		
-		int secondsLeft = this._coolDown.secondsLeft(player);
-		if (secondsLeft > 0) {
-			int minutes = secondsLeft/60;
-			int seconds = secondsLeft - 60 * minutes;
-			this.waitForCoolDownMessage.sendMessage(player, minutes, seconds);
-			return;
-		}
-		
+
+		if (!verifyCoolDown(player)) return;
+
 		this.freeBuilders.put(player, new FreeBuilderInfo(player));
+		player.sendMessage("Freebuild mode is now active.");	
+	}
+
+	private boolean verifyCoolDown(Player player) {
+		if (player.hasPermission("freebuild.nocooldown")) return true;
+
+		int secondsLeft = this._coolDown.secondsLeft(player);
+		if (secondsLeft == 0) return true;
+
+		int minutes = secondsLeft/60;
+		int seconds = secondsLeft - 60 * minutes;
+		this.waitForCoolDownMessage.sendMessage(player, minutes, seconds);
+		return false;
 	}
 
 	void offCommand(Player player, String[] args)
@@ -120,18 +127,19 @@ public class Commands {
 			player.sendMessage(OFF_COMMAND);
 			return;
 		}
-		
-		if (!this.freeBuilders.hasInformation(player))
+
+		if (!isFreeBuilder(player))
 		{
-			player.sendMessage("You already have FreeBuilder OFF.");
+			player.sendMessage("Survival mode is already active (freebuild is OFF).");
 			return;
 		}
-		
-		this.freeBuilders.get(player);
-		
+
+		if (!verifyCoolDown(player)) return;
+
 		// TODO: Add cool down period
-		
+
 		this.freeBuilders.remove(player);
+		player.sendMessage("Survival mode is now active (freebuild is OFF).");		
 	}
 
 

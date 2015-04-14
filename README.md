@@ -25,6 +25,11 @@ When the user changes to FreeBuild mode, the following applies:
 
 ## Release history
 
+### 2.3.1 (2015-04-15)
+
+* NEW: Added a permission to avoid cool down period
+* BUG: Could not use ON/OFF
+
 ### 2.3 (2015-04-14)
 
 * NEW: Added a configurable cooldown period. 
